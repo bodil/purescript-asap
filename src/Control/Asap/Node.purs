@@ -1,13 +1,10 @@
 module Control.Asap.Node where
 
-import Control.Monad.Eff
+foreign import data AsapForeign :: *
 
-foreign import data Asap :: !
-
---| Takes an effect of type `Eff e Unit` and executes it as soon as possible,
---| but after the current event has completed, and after previously
---| scheduled jobs.
-foreign import schedule """
+foreign import asap """
+var asap = null; try {
+var nodeTest = process.version;
 var domain;
 var hasSetImmediate = typeof setImmediate === "function";
 function rawAsap(task) {
@@ -60,7 +57,7 @@ function requestFlush() {
 }
 
 var freeTasks = [];
-function asap(task) {
+asap = function asap(task) {
     var rawTask;
     if (freeTasks.length) {
         rawTask = freeTasks.pop();
@@ -97,9 +94,4 @@ RawTask.prototype.call = function () {
         freeTasks.push(this);
     }
 };
-
-function schedule(task) {
-  return function() {
-    asap(task);
-  };
-}""" :: forall e. Eff (asap :: Asap | e) Unit -> Eff (asap ::Asap | e) Unit
+} catch (e) {}""" :: AsapForeign

@@ -1,13 +1,10 @@
 module Control.Asap.Browser where
 
-import Control.Monad.Eff
+foreign import data AsapForeign :: *
 
-foreign import data Asap :: !
-
---| Takes an effect of type `Eff e Unit` and executes it as soon as possible,
---| but after the current event has completed, and after previously
---| scheduled jobs.
-foreign import schedule """
+foreign import asap """
+var asap = null; try {
+var browserTest = window.location;
 var global = window;
 function rawAsap(task) {
     if (!queue.length) {
@@ -78,7 +75,7 @@ function throwFirstError() {
         throw pendingErrors.shift();
     }
 }
-function asap(task) {
+asap = function asap(task) {
     var rawTask;
     if (freeTasks.length) {
         rawTask = freeTasks.pop();
@@ -111,4 +108,5 @@ function schedule(task) {
   return function() {
     asap(task);
   };
-}""" :: forall e. Eff (asap :: Asap | e) Unit -> Eff (asap ::Asap | e) Unit
+}
+} catch (e) {}""" :: AsapForeign

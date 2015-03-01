@@ -1,6 +1,6 @@
 module Test.Main where
 
-import Control.Asap.Node
+import Control.Asap
 import Control.Monad.Eff.Ref
 import Data.List (List(..), fromArray)
 import Debug.Trace

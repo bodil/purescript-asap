@@ -1,6 +1,6 @@
 # Module Documentation
 
-## Module Control.Asap.Browser
+## Module Control.Asap
 
 #### `Asap`
 
@@ -20,21 +20,21 @@ but after the current event has completed, and after previously
 scheduled jobs.
 
 
-## Module Control.Asap.Node
+## Module Control.Asap.Foreign
 
-#### `Asap`
+#### `AsapForeign`
 
 ``` purescript
-data Asap :: !
+data AsapForeign :: *
 ```
 
 
-#### `schedule`
+#### `asap`
 
 ``` purescript
-schedule :: forall e. Eff (asap :: Asap | e) Unit -> Eff (asap :: Asap | e) Unit
+asap :: AsapForeign
 ```
 
-Takes an effect of type `Eff e Unit` and executes it as soon as possible,
-but after the current event has completed, and after previously
-scheduled jobs.
+
+
+

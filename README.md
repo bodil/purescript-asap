@@ -12,7 +12,7 @@ This module currently bundles version 2.0.1 of `asap`.
 ```purescript
 module Main where
 
-import Control.Asap.Browser
+import Control.Asap
 import Debug.Trace
 
 main = do
@@ -22,11 +22,6 @@ main = do
 
 The above example would print `Hello world!` first, then print `Hello
 sailor!` immediately afterwards.
-
-Note that there are two versions of the `Control.Asap` module:
-`Control.Asap.Node`, which expects a Node.js environment, and
-`Control.Asap.Browser`, which expects a browser environment. It is
-left to the user to pick the correct one.
 
 ## Documentation
 
