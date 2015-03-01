@@ -1,0 +1,25 @@
+{
+  "name": "purescript-asap",
+  "version": "1.0.0",
+  "moduleType": [
+    "node"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "output"
+  ],
+  "devDependencies": {
+    "purescript-test-unit": "~1.1.5",
+    "purescript-refs": "~0.1.2",
+    "purescript-lists": "~0.6.0"
+  },
+  "resolutions": {
+    "purescript-tuples": "~0.3.0",
+    "purescript-monoid": "~0.2.0",
+    "purescript-foldable-traversable": "~0.3.0",
+    "purescript-transformers": "~0.5.0",
+    "purescript-identity": "~0.3.0"
+  }
+}
