@@ -7,7 +7,7 @@ var asap = null; try {
 var nodeTest = process.version;
 var domain;
 var hasSetImmediate = typeof setImmediate === "function";
-function rawAsap(task) {
+var rawAsap = function (task) {
     if (!queue.length) {
         requestFlush();
         flushing = true;
@@ -19,7 +19,7 @@ var queue = [];
 var flushing = false;
 var index = 0;
 var capacity = 1024;
-function flush() {
+var flush = function() {
     while (index < queue.length) {
         var currentIndex = index;
         index = index + 1;
@@ -38,7 +38,7 @@ function flush() {
 }
 
 rawAsap.requestFlush = requestFlush;
-function requestFlush() {
+var requestFlush = function() {
     var parentDomain = process.domain;
     if (parentDomain) {
         if (!domain) {
@@ -57,7 +57,7 @@ function requestFlush() {
 }
 
 var freeTasks = [];
-asap = function asap(task) {
+asap =  function (task) {
     var rawTask;
     if (freeTasks.length) {
         rawTask = freeTasks.pop();
@@ -69,7 +69,7 @@ asap = function asap(task) {
     rawAsap(rawTask);
 }
 
-function RawTask() {
+var RawTask = function() {
     this.task = null;
     this.domain = null;
 }
