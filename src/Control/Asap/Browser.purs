@@ -6,7 +6,7 @@ foreign import asap """
 var asap = null; try {
 var browserTest = window.location;
 var global = window;
-function rawAsap(task) {
+var rawAsap = function (task) {
     if (!queue.length) {
         requestFlush();
         flushing = true;
@@ -18,7 +18,7 @@ var flushing = false;
 var requestFlush;
 var index = 0;
 var capacity = 1024;
-function flush() {
+var flush = function() {
     while (index < queue.length) {
         var currentIndex = index;
         index = index + 1;
@@ -35,14 +35,7 @@ function flush() {
     index = 0;
     flushing = false;
 }
-var BrowserMutationObserver = global.MutationObserver || global.WebKitMutationObserver;
-if (typeof BrowserMutationObserver === "function") {
-    requestFlush = makeRequestCallFromMutationObserver(flush);
-} else {
-    requestFlush = makeRequestCallFromTimer(flush);
-}
-rawAsap.requestFlush = requestFlush;
-function makeRequestCallFromMutationObserver(callback) {
+var makeRequestCallFromMutationObserver = function(callback) {
     var toggle = 1;
     var observer = new BrowserMutationObserver(callback);
     var node = document.createTextNode("");
@@ -52,7 +45,7 @@ function makeRequestCallFromMutationObserver(callback) {
         node.data = toggle;
     };
 }
-function makeRequestCallFromTimer(callback) {
+var makeRequestCallFromTimer = function (callback) {
     return function requestCall() {
         var timeoutHandle = setTimeout(handleTimer, 0);
         var intervalHandle = setInterval(handleTimer, 50);
@@ -67,10 +60,19 @@ function makeRequestCallFromTimer(callback) {
 }
 rawAsap.makeRequestCallFromTimer = makeRequestCallFromTimer;
 
+var BrowserMutationObserver = global.MutationObserver || global.WebKitMutationObserver;
+if (typeof BrowserMutationObserver === "function") {
+    requestFlush = makeRequestCallFromMutationObserver(flush);
+} else {
+    requestFlush = makeRequestCallFromTimer(flush);
+}
+rawAsap.requestFlush = requestFlush;
+
+
 var freeTasks = [];
 var pendingErrors = [];
 var requestErrorThrow = rawAsap.makeRequestCallFromTimer(throwFirstError);
-function throwFirstError() {
+var throwFirstError = function() {
     if (pendingErrors.length) {
         throw pendingErrors.shift();
     }
@@ -85,7 +87,7 @@ asap = function asap(task) {
     rawTask.task = task;
     rawAsap(rawTask);
 }
-function RawTask() {
+var RawTask = function() {
     this.task = null;
 }
 RawTask.prototype.call = function () {
@@ -104,7 +106,7 @@ RawTask.prototype.call = function () {
     }
 };
 
-function schedule(task) {
+var schedule = function(task) {
   return function() {
     asap(task);
   };
